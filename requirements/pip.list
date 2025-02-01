@@ -3,4 +3,3 @@ ansible-runner
 dnspython
 pypsrp
 requests
-pyyaml
