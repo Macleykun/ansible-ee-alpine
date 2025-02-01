@@ -1,4 +1,7 @@
 ---
 collections:
   - name: community.general
-  - name: ansible.windows
+  - name: containers.podman
+  - name: ansible.posix
+#  - name: community.mysql
+#  - name: community.crypto

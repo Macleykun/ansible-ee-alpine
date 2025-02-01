@@ -1,5 +1,2 @@
-ansible-core==2.18.1
+ansible-core
 ansible-runner
-dnspython
-pypsrp
-requests

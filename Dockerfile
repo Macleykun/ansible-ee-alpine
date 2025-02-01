@@ -18,24 +18,22 @@ FROM python:alpine
     WORKDIR /runner/
  
     # Add non-root user
-    ARG USER=ansible
-    ARG GROUP=ansible
-    ARG UID=1000
-    ARG GID=1000
+    ARG USER=ansible && \
+        GROUP=ansible && \
+        UID=1000 && \
+        GID=1000
     RUN addgroup ${GROUP} --gid ${GID} && \
         adduser  ${USER}  --uid ${UID} \
           --ingroup "${GROUP}" \
           --disabled-password && \
-        chown ${USER}:${GROUP} /runner/
- 
-    RUN chmod 777 /runner/ /home/ansible/
+        chown ${USER}:${GROUP} /runner/ /home/"${USER}"/
  
     # Add requirements
     COPY requirements/apk.list requirements/pip.list requirements/ansible.yaml /requirements/
  
     RUN apk add --update --no-cache $(cat /requirements/apk.list) && \
         ln -s /usr/local/bin/python3 /usr/bin/python3 && \
-        pip install --upgrade --no-cache-dir $(grep ansible-core /requirements/pip.list)
+        pip install --upgrade --no-cache-dir $(grep ansible-core /requirements/pip.list) # Needed for ansible-navigator
  
     # Copy python environment (Ansible required args and scripts)
     ENV PATH=/opt/ansible_venv/bin:${PATH} \
@@ -57,7 +55,9 @@ FROM python:alpine
           --requirements-file /requirements/ansible.yaml --collections-path "/usr/share/ansible/collections" && \
         chmod -R a=rX /usr/share/ansible
 
-    ENV HOME=/home/ansible
+    ENV HOME=/home/"${USER}"
  
     # Switch to non-root user
     USER ${UID}:${GID}
+
+    ENTRYPOINT ["ansible --version && pip list && ansible-galaxy collection list && ansible-galaxy role list"]
