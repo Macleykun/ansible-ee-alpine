@@ -31,7 +31,7 @@ FROM python:alpine
     RUN chmod 777 /runner/ /home/ansible/
  
     # Add requirements
-    COPY requirements/apk.list requirements/ansible.yaml /requirements/
+    COPY requirements/apk.list requirements/pip.list requirements/ansible.yaml /requirements/
  
     RUN apk add --update --no-cache $(cat /requirements/apk.list) && \
         ln -s /usr/local/bin/python3 /usr/bin/python3 && \
