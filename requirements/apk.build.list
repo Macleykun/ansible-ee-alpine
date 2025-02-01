@@ -2,4 +2,3 @@ gcc
 libgcrypt-dev
 musl-dev
 openssl-dev
-py3-yaml
