@@ -12,7 +12,7 @@ FROM python:alpine as builder
  
 ######################################### RUNNER #########################################
  
-FROM alpine:latest
+FROM python:alpine
  
     # Directory for executing Playbooks
     WORKDIR /runner/
