@@ -1,9 +1,5 @@
 ansible-core
 ansible-runner
 dnspython
-pymssql
 pypsrp
-pyspnego
-python-ldap
 requests
-sansldap

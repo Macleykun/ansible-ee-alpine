@@ -1,6 +1,4 @@
 gcc
-krb5-dev
 libgcrypt-dev
 musl-dev
-openldap-dev
 openssl-dev
