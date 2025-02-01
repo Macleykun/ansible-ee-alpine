@@ -60,4 +60,5 @@ FROM python:alpine
     # Switch to non-root user
     USER ${UID}:${GID}
 
-    ENTRYPOINT ["ansible --version && pip list && ansible-galaxy collection list && ansible-galaxy role list"]
+#    ENTRYPOINT ["ansible --version && pip list && ansible-galaxy collection list && ansible-galaxy role list"]
+    ENTRYPOINT ["ansible","--version"]
