@@ -2,3 +2,4 @@ gcc
 libgcrypt-dev
 musl-dev
 openssl-dev
+python3
