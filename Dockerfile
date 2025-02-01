@@ -1,6 +1,6 @@
 ######################################### BUILD #########################################
  
-FROM python:alpine3.20@sha256:7788ec80bdacc4736a50adce4c3711581e83650a8895c6dbf202caf4af7a3270 as builder
+FROM python:alpine as builder
  
     # Add configuration files
     COPY requirements/apk.build.list requirements/pip.list /requirements/
@@ -12,7 +12,7 @@ FROM python:alpine3.20@sha256:7788ec80bdacc4736a50adce4c3711581e83650a8895c6dbf2
  
 ######################################### RUNNER #########################################
  
-FROM python:alpine3.20@sha256:7788ec80bdacc4736a50adce4c3711581e83650a8895c6dbf202caf4af7a3270
+FROM python:alpine
  
     # Directory for executing Playbooks
     WORKDIR /runner/
@@ -33,7 +33,8 @@ FROM python:alpine3.20@sha256:7788ec80bdacc4736a50adce4c3711581e83650a8895c6dbf2
     # Add requirements
     COPY requirements/apk.list requirements/ansible.yaml /requirements/
  
-    RUN apk add --update --no-cache $(cat /requirements/apk.list)
+    RUN apk add --update --no-cache $(cat /requirements/apk.list) && \
+        ln -s /usr/bin/python3 /bin/python3 # For ansible-navigator
  
     # Copy python environment (Ansible required args and scripts)
     ENV PATH=/opt/ansible_venv/bin:${PATH} \
