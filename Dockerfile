@@ -61,4 +61,4 @@ FROM python:alpine
     USER ${UID}:${GID}
 
 #    ENTRYPOINT ["ansible --version && pip list && ansible-galaxy collection list && ansible-galaxy role list"]
-    ENTRYPOINT ["ansible","--version"]
+#    ENTRYPOINT ["ansible","--version"]
