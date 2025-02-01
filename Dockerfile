@@ -34,7 +34,8 @@ FROM python:alpine
     COPY requirements/apk.list requirements/ansible.yaml /requirements/
  
     RUN apk add --update --no-cache $(cat /requirements/apk.list) && \
-        ln -s /usr/local/bin/python3 /usr/bin/python3 # For ansible-navigator
+        ln -s /usr/local/bin/python3 /usr/bin/python3 && \ # For ansible-navigator
+        pip install --upgrade --no-cache-dir pyyaml ansible-core
  
     # Copy python environment (Ansible required args and scripts)
     ENV PATH=/opt/ansible_venv/bin:${PATH} \
