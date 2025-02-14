@@ -1,3 +1,5 @@
+Thanks to [justsomescripts](https://github.com/justsomescripts/ansible-ee-alpine) for the initial setup!
+
 <a name="readme-top"></a>
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/justsomescripts/ansible-ee-alpine/.github%2Fworkflows%2Fcontainer.yml?style=for-the-badge&logo=github)](https://github.com/justsomescripts/ansible-ee-alpine/actions/workflows/container.yml)
 [![Docker Image Version (tag)](https://img.shields.io/docker/v/justsomescripts/ansible-ee-alpine/latest?style=for-the-badge&logo=docker&color=blue)](https://hub.docker.com/r/justsomescripts/ansible-ee-alpine)
