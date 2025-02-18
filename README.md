@@ -30,7 +30,7 @@ Generally make a hosts file to a remote host you already have ssh'd into and als
 
 ## 📖 Usage
 
-See the ansible-navigator.yml file! It's configured that you can use your own private keys from your host easily and not leave logging/artefacts behind.
+See the [ansible-navigator.yml file](https://github.com/Macleykun/ansible-ee-alpine/blob/main/ansible-navigator.yml)! It's configured that you can use your own private keys from your host easily and not leave logging/artefacts behind.
 
 ## 📬 Contact
 
