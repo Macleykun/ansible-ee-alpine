@@ -1,7 +1,14 @@
 Thanks to [justsomescripts](https://github.com/justsomescripts/ansible-ee-alpine) for the initial setup!
 
+
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/macleykun/ansible-ee-alpine/docker-publish.yml)
+
+![idk](https://ghcr-badge.egpl.dev/Macleykun/ansible-ee-alpine/size?color=%2344cc11&tag=main&label=image+size&trim=)
+
+![wha](https://ghcr-badge.egpl.dev/Macleykun/ansible-ee-alpine/tags?color=%2344cc11&ignore=sha256*%2Cnightly&n=2&label=image+tags&trim=)
+
 <a name="readme-top"></a>
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/justsomescripts/ansible-ee-alpine/.github%2Fworkflows%2Fcontainer.yml?style=for-the-badge&logo=github)](https://github.com/justsomescripts/ansible-ee-alpine/actions/workflows/container.yml)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/macleykun/ansible-ee-alpine/.github%2Fworkflows%2Fdocker-publish.yml?style=for-the-badge&logo=github)](https://github.com/justsomescripts/ansible-ee-alpine/actions/workflows/container.yml)
 [![Docker Image Version (tag)](https://img.shields.io/docker/v/justsomescripts/ansible-ee-alpine/latest?style=for-the-badge&logo=docker&color=blue)](https://hub.docker.com/r/justsomescripts/ansible-ee-alpine)
 [![Docker Image Size](https://img.shields.io/docker/image-size/justsomescripts/ansible-ee-alpine?style=for-the-badge&logo=docker&color=blue)](https://hub.docker.com/r/justsomescripts/ansible-ee-alpine)
 
