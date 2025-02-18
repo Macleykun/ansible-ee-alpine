@@ -42,9 +42,10 @@ FROM python:alpine
         ANSIBLE_LOCAL_TEMP=/tmp \
         ANSIBLE_INVENTORY_PLUGINS=/runner/project/plugins \
         ANSIBLE_SSH_ARGS="-o ControlMaster=auto -o ControlPersist=60s" \
-        ANSIBLE_SSH_HOST_KEY_CHECKING=False \
         ANSIBLE_SSH_PIPELINING=True \
         ANSIBLE_HASH_BEHAVIOUR=merge
+#        ANSIBLE_SSH_HOST_KEY_CHECKING=False \
+
     COPY --from=builder /opt/ansible_venv/ /opt/ansible_venv/
  
     ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS=
