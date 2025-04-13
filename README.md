@@ -22,6 +22,12 @@ This project provides container images for Ansible [Execution Environments](http
 
 ## ✈️ Getting Started
 
+If you still need to install ansible-navigator:
+
+```bash
+pip3 install 'ansible-navigator' --break-system-packages && pip3 uninstall 'ansible-core' --break-system-package -y
+```
+
 ```bash
 ansible-navigator collections -m interactive # by default we use the stdout mode in the config
 ```
