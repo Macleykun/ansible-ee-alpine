@@ -1,7 +1,10 @@
 # Security Policy
 
-Currently, only the latest version is supported. Tags are floating, e.g. 1-alpine is always the latest image in major version 1.
+The latest pusht tag version is supported:
+- main
+- nightly
+- v*.*.*
 
 ## Reporting a Vulnerability
 
-If you find a vulnerability, please don't open an issue here. Write a mail to <mail@dgries.de> with a short description.
+Open an [issue](https://github.com/macleykun/ansible-ee-alpine/issues)!
