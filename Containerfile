@@ -33,7 +33,10 @@ RUN addgroup ${GROUP} --gid ${GID} && \
 # Add requirements
 COPY requirements/apk.list requirements/pip.list requirements/ansible.yaml /requirements/
 
-RUN apk add --update --no-cache $(cat /requirements/apk.list)
+RUN apk add --update --no-cache curl git openssh sshpass tar unzip
+#RUN apk add --update --no-cache $(cat /requirements/apk.list) #&& \
+#    ln -s /usr/local/bin/python3 /usr/bin/python3 && \
+#    pip install --upgrade --no-cache-dir ansible-core # Needed for ansible-navigator
 
 # Copy python environment (Ansible required args and scripts)
 ENV PATH=/opt/ansible_venv/bin:${PATH} \
