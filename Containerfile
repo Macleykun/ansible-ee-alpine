@@ -1,45 +1,43 @@
 ######################################### BUILD #########################################
- 
-FROM python:alpine as builder
 
-# Add configuration files
+# Saves on the build apk deps for pip packages
+FROM python:alpine AS builder
+
+# Add dependencies lists to install the pip packages for runtime later
 COPY requirements/apk.build.list requirements/pip.list /requirements/
  
-# Install system build dependencies
-RUN apk add --update --no-cache $(cat /requirements/apk.build.list)
-RUN python -m venv /opt/ansible_venv/ && PATH=/opt/ansible_venv/bin:${PATH} \
+# Install build dependencies to then install the pip runtime packages
+RUN apk add --update --no-cache "$(cat /requirements/apk.build.list)"
+RUN python -m venv /opt/ansible_venv/ && PATH=/opt/ansible_venv/bin:"${PATH}" \
     pip install --upgrade --no-cache-dir --requirement requirements/pip.list
 
 ######################################### RUNNER #########################################
  
 FROM python:alpine
 
-LABEL org.opencontainers.image.description Just a really small Ansible Execution Environment that is easily customizable and maintainable withoud using the bloated ansible-builder ;)
+LABEL org.opencontainers.image.description="A really small Ansible Execution Environment that is easily customizable and maintainable withoud using the bloated ansible-builder ;)"
 
-# Directory for executing Playbooks
 WORKDIR /runner/
 
-# Add non-root user
+# Create rootless user
 ARG USER=ansible && \
     GROUP=ansible && \
     UID=1000 && \
     GID=1000
-RUN addgroup ${GROUP} --gid ${GID} && \
-    adduser  ${USER}  --uid ${UID} \
+RUN addgroup "${GROUP}" --gid "${GID}" && \
+    adduser  "${USER}"  --uid "${UID}" \
       --ingroup "${GROUP}" \
       --disabled-password && \
-    chown ${USER}:${GROUP} /runner/ /home/"${USER}"/
+    chown "${USER}":"${GROUP}" /runner/ /home/"${USER}"/
 
-# Add requirements
+# Add runtime dependencies lists
 COPY requirements/apk.list requirements/pip.list requirements/ansible.yaml /requirements/
 
-RUN apk add --update --no-cache curl git openssh sshpass tar unzip
-#RUN apk add --update --no-cache $(cat /requirements/apk.list) #&& \
-#    ln -s /usr/local/bin/python3 /usr/bin/python3 && \
-#    pip install --upgrade --no-cache-dir ansible-core # Needed for ansible-navigator
+RUN apk add --update --no-cache $(cat /requirements/apk.list) && \
+    ln -s /usr/local/bin/python3 /usr/bin/python3
 
 # Copy python environment (Ansible required args and scripts)
-ENV PATH=/opt/ansible_venv/bin:${PATH} \
+ENV PATH=/opt/ansible_venv/bin:"${PATH}" \
     ANSIBLE_ROLES_PATH=roles:/runner/roles:/usr/share/ansible/roles \
     ANSIBLE_COLLECTIONS_PATH=collections:/runner/collections:/usr/share/ansible/collections \
     ANSIBLE_LOCAL_TEMP=/tmp \
@@ -47,9 +45,10 @@ ENV PATH=/opt/ansible_venv/bin:${PATH} \
     ANSIBLE_SSH_ARGS="-o ControlMaster=auto -o ControlPersist=60s" \
     ANSIBLE_SSH_PIPELINING=True \
     ANSIBLE_HASH_BEHAVIOUR=merge
-#    ANSIBLE_SSH_HOST_KEY_CHECKING=False \
+#    ANSIBLE_SSH_HOST_KEY_CHECKING=False
 COPY --from=builder /opt/ansible_venv/ /opt/ansible_venv/
 
+# Install roles and collections
 ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS=
 ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS=
 RUN ansible-galaxy role install ${ANSIBLE_GALAXY_CLI_ROLE_OPTS} --role-file /requirements/ansible.yaml \
@@ -60,4 +59,4 @@ RUN ansible-galaxy role install ${ANSIBLE_GALAXY_CLI_ROLE_OPTS} --role-file /req
 ENV HOME=/home/"${USER}"
 
 # Switch to non-root user
-USER ${UID}:${GID}
+USER "${UID}":"${GID}"
