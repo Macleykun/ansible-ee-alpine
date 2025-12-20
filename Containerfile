@@ -67,16 +67,16 @@ ENV PATH=/opt/ansible_venv/bin:"${PATH}" \
 COPY --from=builder /opt/ansible_venv/ /opt/ansible_venv/
 
 # Install roles and collections
-#ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS=
-#ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS=
-#RUN ansible-galaxy role install ${ANSIBLE_GALAXY_CLI_ROLE_OPTS} --role-file /requirements/ansible.yaml \
-#      --roles-path "/usr/share/ansible/roles" && \
-#    ANSIBLE_GALAXY_DISABLE_GPG_VERIFY=1 ansible-galaxy collection install ${ANSIBLE_GALAXY_CLI_COLLECTION_OPTS} \
-#      --requirements-file /requirements/ansible.yaml --collections-path "/usr/share/ansible/collections" && \
-#    chmod -R a=rX /usr/share/ansible
+ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS=
+ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS=
+RUN ansible-galaxy role install ${ANSIBLE_GALAXY_CLI_ROLE_OPTS} --role-file /requirements/ansible.yaml \
+      --roles-path "/usr/share/ansible/roles" && \
+    ANSIBLE_GALAXY_DISABLE_GPG_VERIFY=1 ansible-galaxy collection install ${ANSIBLE_GALAXY_CLI_COLLECTION_OPTS} \
+      --requirements-file /requirements/ansible.yaml --collections-path "/usr/share/ansible/collections" && \
+    chmod -R a=rX /usr/share/ansible
 
 #COPY --from=builder /usr/share/ansible/roles /usr/share/ansible/roles
-COPY --from=builder /usr/share/ansible/collections /usr/share/ansible/collections
+#COPY --from=builder /usr/share/ansible/collections /usr/share/ansible/collections
 
 ENV HOME=/home/"${USER}"
 
