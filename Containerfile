@@ -7,7 +7,7 @@ FROM python:alpine AS builder
 COPY requirements/apk.build.list requirements/pip.list /requirements/
  
 # Install build dependencies to then install the pip runtime packages
-RUN apk add --update --no-cache "$(cat /requirements/apk.build.list)"
+RUN apk add --update --no-cache $(cat /requirements/apk.build.list)
 RUN python -m venv /opt/ansible_venv/ && PATH=/opt/ansible_venv/bin:"${PATH}" \
     pip install --upgrade --no-cache-dir --requirement requirements/pip.list
 
