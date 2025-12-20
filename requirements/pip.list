@@ -1,4 +1,3 @@
 ansible-core
 ansible-runner
 passlib
-pyyaml
