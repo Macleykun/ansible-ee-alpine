@@ -4,7 +4,7 @@
 FROM python:alpine AS builder
 
 # Add dependencies lists to install the pip packages for runtime later
-COPY requirements/apk.build.list requirements/pip.list /requirements/
+COPY requirements/apk.build.list requirements/pip.list requirements/ansible.yaml /requirements/
  
 # Install build dependencies to then install the pip runtime packages
 RUN apk add --no-cache $(cat /requirements/apk.build.list)
