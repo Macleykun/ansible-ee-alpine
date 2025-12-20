@@ -1,6 +1,5 @@
 curl
-git
-openssh
+openssh-client
 sshpass
 tar
 unzip

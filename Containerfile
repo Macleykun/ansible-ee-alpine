@@ -7,7 +7,7 @@ FROM python:alpine AS builder
 COPY requirements/apk.build.list requirements/pip.list /requirements/
  
 # Install build dependencies to then install the pip runtime packages
-RUN apk add --update --no-cache $(cat /requirements/apk.build.list)
+RUN apk add --no-cache $(cat /requirements/apk.build.list)
 RUN python -m venv /opt/ansible_venv/ && PATH=/opt/ansible_venv/bin:"${PATH}" \
     pip install --upgrade --no-cache-dir --no-compile --requirement requirements/pip.list
 
@@ -33,7 +33,7 @@ RUN addgroup "${GROUP}" --gid "${GID}" && \
 # Add runtime dependencies lists
 COPY requirements/apk.list requirements/pip.list requirements/ansible.yaml /requirements/
 
-RUN apk add --update --no-cache $(cat /requirements/apk.list) && \
+RUN apk add --no-cache $(cat /requirements/apk.list) && \
     ln -s /usr/local/bin/python3 /usr/bin/python3
 
 # Copy python environment (Ansible required args and scripts)
