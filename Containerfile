@@ -11,6 +11,16 @@ RUN apk add --no-cache $(cat /requirements/apk.build.list)
 RUN python -m venv /opt/ansible_venv/ && PATH=/opt/ansible_venv/bin:"${PATH}" \
     pip install --upgrade --no-cache-dir --requirement requirements/pip.list
 
+
+ENV PATH=/opt/ansible_venv/bin:"${PATH}" \
+    ANSIBLE_ROLES_PATH=roles:/runner/roles:/usr/share/ansible/roles \
+    ANSIBLE_COLLECTIONS_PATH=collections:/runner/collections:/usr/share/ansible/collections \
+    ANSIBLE_LOCAL_TEMP=/tmp \
+    ANSIBLE_INVENTORY_PLUGINS=/runner/project/plugins \
+    ANSIBLE_SSH_ARGS="-o ControlMaster=auto -o ControlPersist=60s" \
+    ANSIBLE_SSH_PIPELINING=True \
+    ANSIBLE_HASH_BEHAVIOUR=merge
+#    ANSIBLE_SSH_HOST_KEY_CHECKING=False
 ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS=
 ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS=
 RUN ansible-galaxy role install ${ANSIBLE_GALAXY_CLI_ROLE_OPTS} --role-file /requirements/ansible.yaml \
