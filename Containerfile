@@ -30,9 +30,8 @@ WORKDIR /runner/
 
 # Add runtime dependencies lists
 COPY requirements/apk.list /requirements/
-
+# Copy install pip modules and Ansible roles and collections
 COPY --from=builder /opt/ansible_venv/ /opt/ansible_venv/
-
 #COPY --from=builder /usr/share/ansible/roles /usr/share/ansible/roles
 COPY --from=builder /usr/share/ansible/collections /usr/share/ansible/collections
 
@@ -46,16 +45,15 @@ RUN addgroup ${GROUP} --gid ${GID} && \
     adduser  ${USER}  --uid ${UID} \
       --ingroup "${GROUP}" \
       --disabled-password && \
-    chown ${USER}:${GROUP} /runner/ /home/"${USER}"/
-
-RUN apk add --no-cache $(cat /requirements/apk.list) && \
+    chown ${USER}:${GROUP} /runner/ /home/"${USER}"/ && \
+    apk add --no-cache $(cat /requirements/apk.list) && \
     ln -s /usr/local/bin/python3 /usr/bin/python3 && \
-    pip install --no-cache-dir ansible-core
+    pip install --no-cache-dir ansible-core && \
+    chmod -R a=rX /usr/share/ansible
 
-RUN chmod -R a=rX /usr/share/ansible
-
-# Copy python environment (Ansible required args and scripts)
-ENV PATH=/opt/ansible_venv/bin:${PATH} \
+# Set user and Ansible required args/paths
+ENV HOME=/home/"${USER}" \
+    PATH=/opt/ansible_venv/bin:${PATH} \
     ANSIBLE_ROLES_PATH=roles:/runner/roles:/usr/share/ansible/roles \
     ANSIBLE_COLLECTIONS_PATH=collections:/runner/collections:/usr/share/ansible/collections \
     ANSIBLE_LOCAL_TEMP=/tmp \
@@ -64,8 +62,6 @@ ENV PATH=/opt/ansible_venv/bin:${PATH} \
     ANSIBLE_SSH_PIPELINING=True \
     ANSIBLE_HASH_BEHAVIOUR=merge
 #    ANSIBLE_SSH_HOST_KEY_CHECKING=False \
-
-ENV HOME=/home/"${USER}"
 
 # Switch to non-root user
 USER ${UID}:${GID}
