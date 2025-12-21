@@ -1,12 +1,12 @@
 ######################################### BUILD #########################################
  
-FROM python:alpine as builder
+FROM python:alpine AS builder
 
 # Add configuration files
 COPY requirements/apk.build.list requirements/pip.list /requirements/
  
 # Install system build dependencies
-RUN apk add --no-cache $(cat /requirements/apk.build.list)
+RUN apk add --no-cache ansible-core $(cat /requirements/apk.build.list)
 RUN python -m venv /opt/ansible_venv/ && PATH=/opt/ansible_venv/bin:${PATH} \
     pip install --no-cache-dir --requirement requirements/pip.list
 
