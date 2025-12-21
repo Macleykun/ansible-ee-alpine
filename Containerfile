@@ -28,6 +28,15 @@ LABEL org.opencontainers.image.description="A really small Ansible Execution Env
 # Directory for executing Playbooks
 WORKDIR /runner/
 
+# Add runtime dependencies lists
+COPY requirements/apk.list /requirements/
+
+COPY --from=builder /opt/ansible_venv/ /opt/ansible_venv/
+
+#COPY --from=builder /usr/share/ansible/roles /usr/share/ansible/roles
+COPY --from=builder /usr/share/ansible/collections /usr/share/ansible/collections
+
+
 # Add non-root user
 ARG USER=ansible && \
     GROUP=ansible && \
@@ -39,12 +48,11 @@ RUN addgroup ${GROUP} --gid ${GID} && \
       --disabled-password && \
     chown ${USER}:${GROUP} /runner/ /home/"${USER}"/
 
-# Add runtime dependencies lists
-COPY requirements/apk.list /requirements/
-
 RUN apk add --no-cache $(cat /requirements/apk.list) && \
     ln -s /usr/local/bin/python3 /usr/bin/python3 && \
     pip install --no-cache-dir ansible-core
+
+RUN chmod -R a=rX /usr/share/ansible
 
 # Copy python environment (Ansible required args and scripts)
 ENV PATH=/opt/ansible_venv/bin:${PATH} \
@@ -56,12 +64,7 @@ ENV PATH=/opt/ansible_venv/bin:${PATH} \
     ANSIBLE_SSH_PIPELINING=True \
     ANSIBLE_HASH_BEHAVIOUR=merge
 #    ANSIBLE_SSH_HOST_KEY_CHECKING=False \
-COPY --from=builder /opt/ansible_venv/ /opt/ansible_venv/
 
-#COPY --from=builder /usr/share/ansible/roles /usr/share/ansible/roles
-COPY --from=builder /usr/share/ansible/collections /usr/share/ansible/collections
-
-RUN chmod -R a=rX /usr/share/ansible
 ENV HOME=/home/"${USER}"
 
 # Switch to non-root user
