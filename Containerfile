@@ -3,7 +3,7 @@
 FROM python:alpine AS builder
 
 # Add configuration files
-COPY requirements/apk.build.list requirements/pip.list /requirements/
+COPY requirements/apk.build.list requirements/pip.list /requirements/ansible.yaml /requirements/
  
 # Install system build dependencies
 RUN apk add --no-cache ansible-core $(cat /requirements/apk.build.list)
