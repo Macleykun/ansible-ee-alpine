@@ -42,6 +42,7 @@ RUN addgroup ${GROUP} --gid ${GID} && \
 COPY requirements/apk.list /requirements/
 
 RUN apk add --no-cache $(cat /requirements/apk.list) && \
+    ln -s /usr/local/bin/python3 /usr/bin/python3 && \
     pip install --no-cache-dir ansible-core
 
 # Copy python environment (Ansible required args and scripts)
