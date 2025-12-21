@@ -32,8 +32,7 @@ WORKDIR /runner/
 COPY requirements/apk.list /requirements/
 # Copy install pip modules and Ansible roles and collections
 COPY --from=builder /opt/ansible_venv/ /opt/ansible_venv/
-#COPY --from=builder /usr/share/ansible/roles /usr/share/ansible/roles
-COPY --from=builder /usr/share/ansible/collections /usr/share/ansible/collections
+COPY --from=builder /usr/share/ansible /usr/share/ansible
 
 
 # Add non-root user
@@ -48,7 +47,6 @@ RUN addgroup ${GROUP} --gid ${GID} && \
     chown ${USER}:${GROUP} /runner/ /home/"${USER}"/ && \
     apk add --no-cache $(cat /requirements/apk.list) && \
     ln -s /usr/local/bin/python3 /usr/bin/python3 && \
-    pip install --no-cache-dir ansible-core && \
     chmod -R a=rX /usr/share/ansible
 
 # Set user and Ansible required args/paths
