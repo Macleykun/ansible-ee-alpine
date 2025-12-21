@@ -4,15 +4,16 @@ FROM python:alpine AS builder
 
 # Add configuration files
 COPY requirements/apk.build.list requirements/pip.list /requirements/ansible.yaml /requirements/
- 
-# Install system build dependencies
-RUN apk add --no-cache $(cat /requirements/apk.build.list)
-RUN python -m venv /opt/ansible_venv/ && PATH=/opt/ansible_venv/bin:${PATH} \
-    pip install --no-cache-dir --requirement requirements/pip.list
 
+# Overridable args to pass to galaxy role/collection install
 ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS=
 ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS=
-RUN ansible-galaxy role install ${ANSIBLE_GALAXY_CLI_ROLE_OPTS} --role-file /requirements/ansible.yaml \
+
+# Install system build dependencies
+RUN apk add --no-cache $(cat /requirements/apk.build.list) && \
+    python -m venv /opt/ansible_venv/ && PATH=/opt/ansible_venv/bin:${PATH} \
+    pip install --no-cache-dir --requirement requirements/pip.list && \
+    ansible-galaxy role install ${ANSIBLE_GALAXY_CLI_ROLE_OPTS} --role-file /requirements/ansible.yaml \
       --roles-path "/usr/share/ansible/roles" && \
     ANSIBLE_GALAXY_DISABLE_GPG_VERIFY=1 ansible-galaxy collection install ${ANSIBLE_GALAXY_CLI_COLLECTION_OPTS} \
       --requirements-file /requirements/ansible.yaml --collections-path "/usr/share/ansible/collections" && \
