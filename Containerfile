@@ -13,10 +13,12 @@ ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS=
 RUN apk add --no-cache $(cat /requirements/apk.build.list) && \
     python -m venv /opt/ansible_venv/ && PATH=/opt/ansible_venv/bin:${PATH} \
     pip install --no-cache-dir --requirement requirements/pip.list && \
-    ansible-galaxy role install ${ANSIBLE_GALAXY_CLI_ROLE_OPTS} --role-file /requirements/ansible.yaml \
+    ansible-galaxy role install ${ANSIBLE_GALAXY_CLI_ROLE_OPTS}
+      --role-file /requirements/ansible.yaml \
       --roles-path "/usr/share/ansible/roles" && \
-    ANSIBLE_GALAXY_DISABLE_GPG_VERIFY=1 ansible-galaxy collection install ${ANSIBLE_GALAXY_CLI_COLLECTION_OPTS} \
-      --requirements-file /requirements/ansible.yaml --collections-path "/usr/share/ansible/collections" && \
+    ansible-galaxy collection install ${ANSIBLE_GALAXY_CLI_COLLECTION_OPTS} \
+      --requirements-file /requirements/ansible.yaml \
+      --collections-path "/usr/share/ansible/collections" && \
     chmod -R a=rX /usr/share/ansible
 
 ######################################### RUNNER #########################################
@@ -33,7 +35,6 @@ COPY requirements/apk.list /requirements/
 # Copy install pip modules and Ansible roles and collections
 COPY --from=builder /opt/ansible_venv/ /opt/ansible_venv/
 COPY --from=builder /usr/share/ansible /usr/share/ansible
-
 
 # Add non-root user
 ARG USER=ansible && \
@@ -62,6 +63,3 @@ ENV HOME=/home/"${USER}" \
 
 # Switch to non-root user
 USER ${UID}:${GID}
-
-ENTRYPOINT ['/bin/sh']
-CMD ['ansible','--version']
