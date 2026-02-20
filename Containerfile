@@ -13,7 +13,7 @@ ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS=
 RUN apk add --no-cache $(cat /requirements/apk.build.list) && \
     python -m venv /opt/ansible_venv/ && PATH=/opt/ansible_venv/bin:${PATH} \
     pip install --no-cache-dir --requirement requirements/pip.list && \
-    ansible-galaxy role install ${ANSIBLE_GALAXY_CLI_ROLE_OPTS}
+    ansible-galaxy role install ${ANSIBLE_GALAXY_CLI_ROLE_OPTS} \
       --role-file /requirements/ansible.yaml \
       --roles-path "/usr/share/ansible/roles" && \
     ansible-galaxy collection install ${ANSIBLE_GALAXY_CLI_COLLECTION_OPTS} \
