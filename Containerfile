@@ -46,7 +46,7 @@ RUN addgroup ${GROUP} --gid ${GID} && \
       --disabled-password && \
     chown ${USER}:${GROUP} /runner/ /home/"${USER}"/ && \
     apk add --no-cache $(cat /requirements/apk.list) && \
-    ln -s /usr/local/bin/python3 /usr/bin/python3 && \
+    ln -s /usr/local/bin/python3 /usr/bin/python3
 
 # Set user and Ansible required args/paths
 ENV HOME=/home/"${USER}" \
@@ -62,3 +62,6 @@ ENV HOME=/home/"${USER}" \
 
 # Switch to non-root user
 USER ${UID}:${GID}
+
+ENTRYPOINT ['/bin/sh']
+CMD ['ansible','--version']
