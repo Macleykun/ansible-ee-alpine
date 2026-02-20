@@ -1,5 +1,1 @@
 ansible-core
-gcc
-libgcrypt-dev
-musl-dev
-openssl-dev
