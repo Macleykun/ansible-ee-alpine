@@ -46,7 +46,7 @@ RUN addgroup ${GROUP} --gid ${GID} && \
       --disabled-password && \
     chown ${USER}:${GROUP} /runner/ /home/"${USER}"/ && \
     apk add --no-cache $(cat /requirements/apk.list) && \
-    pip install --no-cache-dir --requirement requirements/pip.list && \
+    pip install --no-cache-dir --requirement /requirements/pip.list && \
     ln -s /usr/local/bin/python3 /usr/bin/python3
 
 # Set user and Ansible required args/paths
