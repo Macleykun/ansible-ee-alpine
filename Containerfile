@@ -47,8 +47,6 @@ RUN addgroup ${GROUP} --gid ${GID} && \
     chown ${USER}:${GROUP} /runner/ /home/"${USER}"/ && \
     apk add --no-cache $(cat /requirements/apk.list) && \
     ln -s /usr/local/bin/python3 /usr/bin/python3 && \
-    pip install --no-cache-dir ansible-core && \
-    chmod -R a=rX /usr/share/ansible
 
 # Set user and Ansible required args/paths
 ENV HOME=/home/"${USER}" \
